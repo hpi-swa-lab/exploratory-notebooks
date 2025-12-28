@@ -1,0 +1,15 @@
+GSMetadata {
+	#version : 1,
+	#mappers : OrderedCollection [
+		GSTonelMapper {
+			#version : 1,
+			#package : MCPackage {
+				#name : 'ExploratoryNotebooks'
+			},
+			#path : FSAbsolutePath [
+				'squeak'
+			]
+		}
+	],
+	#name : 'exploratory-notebooks'
+}
