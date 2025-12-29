@@ -19,12 +19,34 @@ XnbWorkspace class >> appName [
 ]
 
 {
+	#category : #accessing,
+	#'squeak_changestamp' : 'ct 12/29/2025 04:00'
+}
+XnbWorkspace class >> githubRepositoryParams [
+
+	^ {'hpi-swa-lab'. 'exploratory-notebooks'. 'squeak'}
+]
+
+{
 	#category : #'instance creation',
 	#'squeak_changestamp' : 'ct 11/25/2025 16:19'
 }
 XnbWorkspace class >> open [
 
 	^ self new open
+]
+
+{
+	#category : #toolbuilder,
+	#'squeak_changestamp' : 'ct 12/29/2025 04:02'
+}
+XnbWorkspace >> addModelItemsToWindowMenu: menu [
+
+	super addModelItemsToWindowMenu: menu.
+	
+	(self class respondsTo: #appMenu:) ifTrue:
+		[menu addLine.
+		self class appMenu: menu].
 ]
 
 {
