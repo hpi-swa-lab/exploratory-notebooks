@@ -24,7 +24,7 @@ TextEditor >> basicPrintItTextFor: anObject [
 
 {
 	#category : #'*ExploratoryNotebooks-do-its-override',
-	#'squeak_changestamp' : 'ct 12/28/2025 02:58'
+	#'squeak_changestamp' : 'ct 12/29/2025 00:09'
 }
 TextEditor >> printItTextFor: anObject [
 
@@ -35,7 +35,7 @@ TextEditor >> printItTextFor: anObject [
 	(model respondsTo: #printItTextFor:result:) ifTrue: [
 		^ model perform: #printItTextFor:result: with: self selection with: anObject].
 	(model respondsTo: #printItTextFor:) ifTrue: [
-		^ model perform: #printItTextFor: with: self selection].
+		^ model perform: #printItTextFor: with: anObject].
 	
 	^ self basicPrintItTextFor: anObject
 ]

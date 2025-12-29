@@ -79,7 +79,7 @@ Model >> isStaticXnbTool [
 
 {
 	#category : #'*ExploratoryNotebooks-evaluation-pseudo-override',
-	#'squeak_changestamp' : 'ct 12/28/2025 02:54'
+	#'squeak_changestamp' : 'ct 12/29/2025 00:09'
 }
 Model >> printItTextFor: expression result: anObject requestor: requestor [
 
@@ -88,7 +88,7 @@ Model >> printItTextFor: expression result: anObject requestor: requestor [
 	text := true
 		caseOf:
 			{[self respondsTo: #printItTextFor:result:] -> [self printItTextFor: expression result: anObject].
-			[self respondsTo: #printItTextFor:] -> [self printItTextFor: expression]}
+			[self respondsTo: #printItTextFor:] -> [self printItTextFor: anObject]}
 		otherwise:
 			[requestor basicPrintItTextFor: anObject].
 	XnbTracker isTracking ifFalse: [^ text].

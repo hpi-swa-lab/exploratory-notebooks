@@ -228,6 +228,25 @@ XnbWorkspace >> open [
 
 {
 	#category : #evaluation,
+	#'squeak_changestamp' : 'ct 12/29/2025 03:56'
+}
+XnbWorkspace >> printIt: aStringOrText result: anObject [
+	"Like default printIt but eliminate spaces around the result."
+
+	| editor index text |
+	text := self printItTextFor: anObject.
+	
+	editor := self codeTextMorph textMorph editor.
+	index := editor stopIndex.
+	editor
+		closeTypeIn;
+		selectInvisiblyFrom: index to: index - 1;
+		replace: editor selectionInterval with: text;
+		closeTypeIn.
+]
+
+{
+	#category : #evaluation,
 	#'squeak_changestamp' : 'ct 12/2/2025 00:00'
 }
 XnbWorkspace >> printItTextFor: anObject [
