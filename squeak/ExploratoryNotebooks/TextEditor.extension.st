@@ -2,24 +2,15 @@ Extension { #name : #TextEditor }
 
 {
 	#category : #'*ExploratoryNotebooks-do-its-pseudo-override',
-	#'squeak_changestamp' : 'ct 12/28/2025 02:58'
+	#'squeak_changestamp' : 'ct 1/8/2026 04:33'
 }
 TextEditor >> basicPrintItTextFor: anObject [
 
-	| string |
 	self flag: #todo. "mt: Maybe reserve highlights for non-primitive structures only? Maybe skip ByteString, ByteSymbol, Number, Boolean, UndefinedObject? See discussion here: http://forum.world.st/The-Inbox-Morphic-ct-1586-mcz-tp5106774p5129065.html"
 	
-	self flag: #doNotCommit. "revert to older version!"
-	(self debuggerPrintStringForObject: anObject) ifNotNil: [:stringOrText |
-		stringOrText isText ifTrue: [^ stringOrText].
-		string := stringOrText].
-	string ifNil:
-		[string := anObject isInteger
-			ifTrue: [anObject storeStringBase: self defaultIntegerBase]
-			ifFalse: [anObject printString]].
 	^ self class interactivePrintIt
-		ifFalse: [string]
-		ifTrue: [Text string: string attribute: (TextInspectIt on: anObject)]
+		ifFalse: [anObject printString]
+		ifTrue: [Text string: anObject printString attribute: (TextInspectIt on: anObject)]
 ]
 
 {

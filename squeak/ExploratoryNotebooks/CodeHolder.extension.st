@@ -2,13 +2,13 @@ Extension { #name : #CodeHolder }
 
 {
 	#category : #'*ExploratoryNotebooks',
-	#'squeak_changestamp' : 'ct 11/25/2025 17:48'
+	#'squeak_changestamp' : 'ct 1/8/2026 04:33'
 }
 CodeHolder >> asXnbMorphFor: aToolFactory [
 
 	| builder morph |
 	builder := ToolBuilder default.
-	morph := builder build: (self buildCodePaneWith: builder).
+	morph := builder build: ((self buildCodePaneWith: builder) model: self).
 	^ morph
 ]
 

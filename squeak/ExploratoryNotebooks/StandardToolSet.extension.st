@@ -19,6 +19,30 @@ StandardToolSet class >> explore: anObject xnbTrackingContext: aXnbTrackingConte
 ]
 
 {
+	#category : #'*ExploratoryNotebooks-debugging - handlers-override',
+	#'squeak_changestamp' : 'ct 11/25/2025 21:55'
+}
+StandardToolSet class >> handleError: anError [
+	"Double dispatch. Let the processor take care of that error, which usually calls back here to #debugProcess:..."
+
+	self flag: #todoDebugger. "mt: Pass exception-specific parameters to the invocation cue such as for BlockCannotReturn. See discussions here: 
+- http://lists.squeakfoundation.org/archives/list/squeak-dev@lists.squeakfoundation.org/thread/3KBIDO6EUEL7ITTH6TCLAU2PSPSOZBHL/
+- http://lists.squeakfoundation.org/archives/list/squeak-dev@lists.squeakfoundation.org/thread/FAPYVA4R2V42KTNJTTW5EKUUESR6V34G/
+"
+	
+	(Processor activeProcess environmentAt: #xnbErrorHandler ifAbsent: [nil]) ifNotNil: [:block |
+		^ block value: anError].
+	
+	^ Processor debugWithCue: (DebuggerInvocationCue new
+		context: anError signalerContext;
+		exception: anError;
+		label: anError description;
+		fullView: false;
+		"contents: nil;"
+		yourself)
+]
+
+{
 	#category : #'*ExploratoryNotebooks-inspecting',
 	#'squeak_changestamp' : 'ct 12/1/2025 20:22'
 }

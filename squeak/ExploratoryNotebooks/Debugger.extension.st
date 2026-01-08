@@ -16,6 +16,41 @@ Debugger >> asXnbMorphFor: aToolFactory [
 ]
 
 {
+	#category : #'*ExploratoryNotebooks-toolbuilder-pseudo-override',
+	#'squeak_changestamp' : 'ct 1/8/2026 03:42'
+}
+Debugger >> buildActualCodePaneWith: builder [
+
+	self flag: #moveUpstream.
+	^ builder pluggableCodePaneSpec new
+		model: self;
+		getText: #contents; 
+		setText: #contents:notifying:; 
+		selection: #contentsSelection; 
+		menu: #codePaneMenu:shifted:;
+		yourself
+]
+
+{
+	#category : #'*ExploratoryNotebooks-toolbuilder-pseudo-override',
+	#'squeak_changestamp' : 'ct 1/8/2026 03:41'
+}
+Debugger >> buildStackListWith: builder [
+
+	self flag: #moveUpstream.
+	^ builder pluggableListSpec new
+		model: self;
+		list: #contextStackList; 
+		getIndex: #contextStackIndex; 
+		setIndex: #toggleContextStackIndex:; 
+		menu: #contextStackMenu:shifted:; 
+		icon: #messageIconAt:;
+		helpItem: #messageHelpAt:;
+		keyPress: #contextStackKey:from:;
+		yourself
+]
+
+{
 	#category : #'*ExploratoryNotebooks',
 	#'squeak_changestamp' : 'ct 11/25/2025 21:57'
 }
