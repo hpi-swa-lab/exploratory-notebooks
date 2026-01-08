@@ -76,6 +76,15 @@ XnbHtmlReadWriter >> processEndTag: tagName eagerly: eagerly [
 ]
 
 {
+	#category : #accessing,
+	#'squeak_changestamp' : 'ct 1/8/2026 05:06'
+}
+XnbHtmlReadWriter >> stream [
+
+	^ stream
+]
+
+{
 	#category : #private,
 	#'squeak_changestamp' : 'ct 12/27/2025 21:13'
 }
