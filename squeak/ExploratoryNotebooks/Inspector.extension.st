@@ -15,7 +15,7 @@ Inspector >> asXnbMorphFor: aToolFactory [
 
 {
 	#category : #'*ExploratoryNotebooks',
-	#'squeak_changestamp' : 'ct 11/25/2025 22:21'
+	#'squeak_changestamp' : 'ct 12/29/2025 04:26'
 }
 Inspector >> buildXnbPanelWith: builder [
 
@@ -27,7 +27,7 @@ Inspector >> buildXnbPanelWith: builder [
 		yourself.
 	^ self buildWindow: panelSpec with: builder specs: {
 		(0@0 corner: 0.3@1)
-			-> [self buildMultiSelectFieldListWith: builder].
+			-> [self buildFieldListWith: builder].
 		(0.3@0.0 corner: 1@1)
 			-> [self buildValuePaneWith: builder].	}
 ]
