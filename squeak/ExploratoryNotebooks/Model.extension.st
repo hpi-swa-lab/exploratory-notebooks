@@ -18,12 +18,10 @@ Model >> addModelItemsToWindowMenu: menu [
 
 {
 	#category : #'*ExploratoryNotebooks-evaluation-pseudo-override',
-	#'squeak_changestamp' : 'ct 12/2/2025 00:47'
+	#'squeak_changestamp' : 'ct 1/12/2026 22:41'
 }
 Model >> debugIt: expression process: aProcess [
 
-	self flag: #todo. "honor subclasses implementations?"
-	
 	XnbTracker isTracking ifFalse: [^ aProcess debugWithTitle: 'Debug it' translated].
 	
 	^ XnbDebugger
@@ -40,12 +38,10 @@ Model >> debugIt: expression process: aProcess [
 
 {
 	#category : #'*ExploratoryNotebooks-evaluation-pseudo-override',
-	#'squeak_changestamp' : 'ct 12/1/2025 23:29'
+	#'squeak_changestamp' : 'ct 1/13/2026 01:08'
 }
 Model >> exploreIt: expression result: anObject [
 
-	self flag: #todo. "honor subclasses implementations?"
-	
 	XnbTracker isTracking ifFalse: [^ ToolSet explore: anObject].
 	
 	^ ToolSet
@@ -55,12 +51,10 @@ Model >> exploreIt: expression result: anObject [
 
 {
 	#category : #'*ExploratoryNotebooks-evaluation-pseudo-override',
-	#'squeak_changestamp' : 'ct 12/1/2025 20:32'
+	#'squeak_changestamp' : 'ct 1/12/2026 22:41'
 }
 Model >> inspectIt: expression result: anObject [
 
-	self flag: #todo. "honor subclasses implementations?"
-	
 	XnbTracker isTracking ifFalse: [^ ToolSet inspect: anObject].
 	
 	^ ToolSet
@@ -79,15 +73,16 @@ Model >> isStaticXnbTool [
 
 {
 	#category : #'*ExploratoryNotebooks-evaluation-pseudo-override',
-	#'squeak_changestamp' : 'ct 12/29/2025 00:09'
+	#'squeak_changestamp' : 'ct 1/13/2026 01:12'
 }
 Model >> printItTextFor: expression result: anObject requestor: requestor [
 
 	| text |
-	self flag: #todo. "honor direct subclasses implementations?"
+	thisContext sender method == thisContext method ifTrue: [^ #xnbPrintItTextFor:result:requestor:].
 	text := true
 		caseOf:
-			{[self respondsTo: #printItTextFor:result:] -> [self printItTextFor: expression result: anObject].
+			{[(text := self printItTextFor: expression result: anObject requestor: requestor) ~= #xnbPrintItTextFor:result:requestor:] -> [text]. "honor direct subclass implementations"
+			[self respondsTo: #printItTextFor:result:] -> [self printItTextFor: expression result: anObject].
 			[self respondsTo: #printItTextFor:] -> [self printItTextFor: anObject]}
 		otherwise:
 			[requestor basicPrintItTextFor: anObject].

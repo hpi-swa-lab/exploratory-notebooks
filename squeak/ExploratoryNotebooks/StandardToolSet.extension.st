@@ -44,13 +44,12 @@ StandardToolSet class >> handleError: anError [
 
 {
 	#category : #'*ExploratoryNotebooks-inspecting',
-	#'squeak_changestamp' : 'ct 12/1/2025 20:22'
+	#'squeak_changestamp' : 'ct 1/12/2026 22:53'
 }
 StandardToolSet class >> inspect: anObject xnbTrackingContext: aXnbTrackingContext [
 
 	| class |
 	class := anObject inspectorClass.
-	class isProxy ifTrue: [class := (Smalltalk classNamed: class name) ifNil: [Inspector]].
 	(class respondsTo: #openOn:xnbTrackingContext:)
 		ifFalse: [^ class openOn: anObject].
 	^ class openOn: anObject xnbTrackingContext: aXnbTrackingContext

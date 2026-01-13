@@ -14,34 +14,6 @@ ObjectExplorer >> asXnbMorphFor: aToolFactory [
 ]
 
 {
-	#category : #'*ExploratoryNotebooks-toolbuilder-pseudo-override',
-	#'squeak_changestamp' : 'ct 12/29/2025 04:20'
-}
-ObjectExplorer >> buildTreeWith: builder [
-
-	self flag: #moveUpstream.
-	^ builder pluggableTreeSpec new
-		model: self;
-		name: #tree;
-		nodeClass: self class nodeClass;
-		roots: #getList;
-		keyPress: #explorerKey:from:event:;
-		getSelected: #currentSelection;
-		setSelected: #currentSelection:;
-		setSelectedParent: #currentParent:;
-		menu: #genericMenu:;
-		dragItem: #getDragItem:;
-		dragType: #getDragType:;
-		autoDeselect: false;
-		columns: (ObjectExplorerWrapper showContentsInColumns
-			ifTrue: [{
-				[:listMorph | (listMorph filteredItems collect: [:item |
-					item preferredWidthOfColumn: 1]) max].
-				nil "take all the space"}]);
-		yourself
-]
-
-{
 	#category : #'*ExploratoryNotebooks',
 	#'squeak_changestamp' : 'ct 12/1/2025 23:31'
 }
