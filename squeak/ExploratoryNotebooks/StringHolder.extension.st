@@ -14,10 +14,11 @@ StringHolder >> xnbAddExpressionToNotebookFrom: aTextMorph [
 
 {
 	#category : #'*ExploratoryNotebooks',
-	#'squeak_changestamp' : 'ct 12/28/2025 22:24'
+	#'squeak_changestamp' : 'ct 1/13/2026 20:37'
 }
 StringHolder >> xnbCodePaneMenu: aMenu [
 	<codePaneMenuShifted: false>
+	<menuPriority: 400> "'more...' at the very bottom is crucial for muscle memory"
 
 	XnbTracker isTracking ifTrue:
 		[aMenu
