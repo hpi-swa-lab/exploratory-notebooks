@@ -14,11 +14,14 @@ Class {
 
 {
 	#category : #'instance creation',
-	#'squeak_changestamp' : 'ct 12/22/2025 21:58'
+	#'squeak_changestamp' : 'ct 1/13/2026 00:44'
 }
 XnbTrackingProxy class >> for: anObject [
 
 	anObject ifNil: [^ anObject].
+	(ProtoObject canUnderstand: #resolveProxy) ifFalse:
+		[self flag: #requirement. "Optional dependency of #resolveProxy changeset."
+		(anObject isString or: [anObject isNumber] or: [anObject isBoolean]) ifTrue: [^ anObject]].
 	
 	^ self newOn: anObject
 ]

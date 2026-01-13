@@ -6,7 +6,7 @@ Class {
 
 {
 	#category : #baseline,
-	#'squeak_changestamp' : 'ct 1/8/2026 03:30'
+	#'squeak_changestamp' : 'ct 1/13/2026 01:16'
 }
 BaselineOfExploratoryNotebooks >> baseline: spec [
 	<baseline>
@@ -18,14 +18,18 @@ BaselineOfExploratoryNotebooks >> baseline: spec [
 				[spec repository: 'github://LinqLover/squeak-appframework:main'].
 		
 		"packages"
-		spec package: 'ExploratoryNotebooks' with:
-			[spec preLoadDoIt: #installPreviewDependencies].
+		spec
+			package: 'ExploratoryNotebooks';
+			package: 'ExploratoryNotebooksProxies' with:
+				[spec preLoadDoIt: #installProxyPreviewDependencies].
 		
 		"groups"
 		spec
 			group: #minimal with: #('ExploratoryNotebooks');
 			group: #recommended with: #('CtAppFramework');
-			group: #default with: #(minimal recommended)].
+			group: #proxies with: #('ExploratoryNotebooksProxies');
+			group: #default with: #(minimal recommended);
+			group: #experimental with: #(default proxies)].
 ]
 
 {
@@ -48,9 +52,9 @@ BaselineOfExploratoryNotebooks >> depChangeset: urlString [
 
 {
 	#category : #scripts,
-	#'squeak_changestamp' : 'ct 1/8/2026 03:30'
+	#'squeak_changestamp' : 'ct 1/13/2026 01:16'
 }
-BaselineOfExploratoryNotebooks >> installPreviewDependencies [
+BaselineOfExploratoryNotebooks >> installProxyPreviewDependencies [
 
 	| dependencies |
 	self

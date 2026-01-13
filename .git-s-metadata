@@ -18,6 +18,15 @@ GSMetadata {
 			#path : FSAbsolutePath [
 				'squeak'
 			]
+		},
+		GSTonelMapper {
+			#version : 1,
+			#package : MCPackage {
+				#name : 'ExploratoryNotebooksProxies'
+			},
+			#path : FSAbsolutePath [
+				'squeak'
+			]
 		}
 	],
 	#name : 'exploratory-notebooks'
