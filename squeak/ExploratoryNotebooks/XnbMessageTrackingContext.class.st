@@ -20,11 +20,11 @@ XnbMessageTrackingContext class >> message: aMessage [
 
 {
 	#category : #accessing,
-	#'squeak_changestamp' : 'ct 12/28/2025 02:41'
+	#'squeak_changestamp' : 'ct 1/13/2026 20:37'
 }
 XnbMessageTrackingContext >> expressionForReplay [
 
-	^ 'self ' , self expression
+	^ 'self ' , self message
 ]
 
 {

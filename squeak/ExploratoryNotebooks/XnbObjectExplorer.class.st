@@ -82,13 +82,14 @@ XnbObjectExplorer >> object [
 
 {
 	#category : #'accessing - objects',
-	#'squeak_changestamp' : 'ct 12/23/2025 00:19'
+	#'squeak_changestamp' : 'ct 1/13/2026 20:37'
 }
 XnbObjectExplorer >> rootObject: anObject [
 
 	^ super rootObject:
-		((XnbTrackingProxy for: anObject) ifNotNil: [:proxy |
-			proxy xxxxnbTrackingContext: self xnbTrackingContext])
+		((XnbTrackingProxy basicFor: anObject)
+			ifNil: [anObject]
+			ifNotNil: [:proxy | proxy xxxxnbTrackingContext: self xnbTrackingContext])
 ]
 
 {

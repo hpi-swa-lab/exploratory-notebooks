@@ -82,6 +82,15 @@ XnbWorkspace class >> unload [
 ]
 
 {
+	#category : #'initialize-release',
+	#'squeak_changestamp' : 'ct 1/13/2026 01:31'
+}
+XnbWorkspace class >> unregisterFromWorldMenu [
+
+	TheWorldMenu unregisterOpenCommand: self appInstanceName.
+]
+
+{
 	#category : #toolbuilder,
 	#'squeak_changestamp' : 'ct 12/29/2025 04:02'
 }

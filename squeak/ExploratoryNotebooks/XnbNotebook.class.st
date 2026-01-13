@@ -260,12 +260,14 @@ XnbNotebook >> open [
 
 {
 	#category : #saving,
-	#'squeak_changestamp' : 'ct 12/28/2025 01:44'
+	#'squeak_changestamp' : 'ct 1/13/2026 20:37'
 }
 XnbNotebook >> saveOnFileNamed: fileName [
 
 	FileStream newFileNamed: fileName do: [:stream |
-		self styledText printHtmlOn: stream].
+		(XnbHtmlReadWriter on: stream)
+			breakLines: true;
+			nextPutText: self styledText].
 ]
 
 {

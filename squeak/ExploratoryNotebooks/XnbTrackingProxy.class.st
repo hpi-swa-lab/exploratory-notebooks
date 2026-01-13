@@ -14,16 +14,25 @@ Class {
 
 {
 	#category : #'instance creation',
-	#'squeak_changestamp' : 'ct 1/13/2026 00:44'
+	#'squeak_changestamp' : 'ct 1/13/2026 20:38'
 }
-XnbTrackingProxy class >> for: anObject [
+XnbTrackingProxy class >> basicFor: anObject [
 
 	anObject ifNil: [^ anObject].
 	(ProtoObject canUnderstand: #resolveProxy) ifFalse:
 		[self flag: #requirement. "Optional dependency of #resolveProxy changeset."
-		(anObject isString or: [anObject isNumber] or: [anObject isBoolean]) ifTrue: [^ anObject]].
+		(anObject isString or: [anObject isNumber] or: [anObject isBoolean] or: [anObject isForm]) ifTrue: [^ nil]].
 	
 	^ self newOn: anObject
+]
+
+{
+	#category : #'instance creation',
+	#'squeak_changestamp' : 'ct 1/13/2026 20:38'
+}
+XnbTrackingProxy class >> for: anObject [
+
+	^ (self basicFor: anObject) ifNil: [anObject]
 ]
 
 {
@@ -37,7 +46,7 @@ XnbTrackingProxy class >> newOn: anObject [
 
 {
 	#category : #'system primitives',
-	#'squeak_changestamp' : 'ct 1/12/2026 22:43'
+	#'squeak_changestamp' : 'ct 1/13/2026 20:38'
 }
 XnbTrackingProxy >> doesNotUnderstand: aMessage [
 
@@ -64,7 +73,8 @@ XnbTrackingProxy >> doesNotUnderstand: aMessage [
 				ifFalse: [self])
 		arguments: (arguments ifNil: [aMessage arguments]).
 	
-	^ (XnbTrackingProxy for: result xxxxnbResolveTrackingProxy)
+	^ (XnbTrackingProxy basicFor: result xxxxnbResolveTrackingProxy)
+		ifNil: [result xxxxnbResolveTrackingProxy]
 		ifNotNil: [:proxy |
 			proxy xxxxnbTrackingContext:
 				((XnbTrackingContext message: aMessage)

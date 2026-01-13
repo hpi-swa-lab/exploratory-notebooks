@@ -33,7 +33,7 @@ Debugger >> buildActualCodePaneWith: builder [
 
 {
 	#category : #'*ExploratoryNotebooks',
-	#'squeak_changestamp' : 'ct 11/25/2025 21:57'
+	#'squeak_changestamp' : 'ct 1/13/2026 20:37'
 }
 Debugger >> buildXnbFullPanelWith: builder [
 
@@ -44,12 +44,12 @@ Debugger >> buildXnbFullPanelWith: builder [
 		wantsResizeHandles: true;
 		yourself.
 	
-	listSpec := self buildStackListWith: builder.
-	listSpec frame: (0@0 corner: 1@0.275).
+	listSpec := self buildContextStackListWith: builder.
+	listSpec frame: (0 @ 0 corner: 1 @ 0.275).
 	panel children add: listSpec.
-
+	
 	textSpec := self buildActualCodePaneWith: builder.
-	textSpec frame: (0@0.275 corner: 1@1).
+	textSpec frame: (0 @ 0.275 corner: 1 @ 1).
 	panel children add: textSpec.
 	
 	^ panel
