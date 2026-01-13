@@ -73,16 +73,16 @@ Model >> isStaticXnbTool [
 
 {
 	#category : #'*ExploratoryNotebooks-evaluation-pseudo-override',
-	#'squeak_changestamp' : 'ct 1/13/2026 01:12'
+	#'squeak_changestamp' : 'ct 1/13/2026 19:29'
 }
-Model >> printItTextFor: expression result: anObject requestor: requestor [
+Model >> printItTextFor: anObject expression: expression requestor: requestor [
 
 	| text |
-	thisContext sender method == thisContext method ifTrue: [^ #xnbPrintItTextFor:result:requestor:].
+	thisContext sender method == thisContext method ifTrue: [^ #xnbPrintItTextFor:expression:requestor:].
 	text := true
 		caseOf:
-			{[(text := self printItTextFor: expression result: anObject requestor: requestor) ~= #xnbPrintItTextFor:result:requestor:] -> [text]. "honor direct subclass implementations"
-			[self respondsTo: #printItTextFor:result:] -> [self printItTextFor: expression result: anObject].
+			{[(text := self printItTextFor: anObject expression: expression requestor: requestor) ~= #xnbPrintItTextFor:expression:requestor:] -> [text]. "honor direct subclass implementations"
+			[self respondsTo: #printItTextFor:expression:] -> [self printItTextFor: anObject expression: expression].
 			[self respondsTo: #printItTextFor:] -> [self printItTextFor: anObject]}
 		otherwise:
 			[requestor basicPrintItTextFor: anObject].

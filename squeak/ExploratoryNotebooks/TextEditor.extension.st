@@ -15,16 +15,16 @@ TextEditor >> basicPrintItTextFor: anObject [
 
 {
 	#category : #'*ExploratoryNotebooks-do-its-override',
-	#'squeak_changestamp' : 'ct 12/29/2025 00:09'
+	#'squeak_changestamp' : 'ct 1/13/2026 19:28'
 }
 TextEditor >> printItTextFor: anObject [
 
 	self flag: #moveUpstream.
 	
-	(model respondsTo: #printItTextFor:result:requestor:) ifTrue: [
-		^ model perform: #printItTextFor:result:requestor: with: self selection with: anObject with: self].
-	(model respondsTo: #printItTextFor:result:) ifTrue: [
-		^ model perform: #printItTextFor:result: with: self selection with: anObject].
+	(model respondsTo: #printItTextFor:expression:requestor:) ifTrue: [
+		^ model perform: #printItTextFor:expression:requestor: with: anObject with: self selection with: self].
+	(model respondsTo: #printItTextFor:expression:) ifTrue: [
+		^ model perform: #printItTextFor:expression: with: anObject with: self selection].
 	(model respondsTo: #printItTextFor:) ifTrue: [
 		^ model perform: #printItTextFor: with: anObject].
 	
