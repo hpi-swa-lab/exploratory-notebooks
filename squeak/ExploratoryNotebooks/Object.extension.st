@@ -11,6 +11,27 @@ Object >> asXnbMorphFor: aToolFactory [
 ]
 
 {
+	#category : #'*ExploratoryNotebooks-*Morphic-Explorer-override',
+	#'squeak_changestamp' : 'ct 1/13/2026 20:36'
+}
+Object >> explorerContents [
+	"Override that method to define which properties of the object should be shown in the
+	object explorer. See for example the implementation in Integer>>#explorerContents."
+
+	self flag: #hacked. "must not send special selector #class :/"
+	^ ((self perform: #class) allInstVarNames asOrderedCollection withIndexCollect: [:each :index |
+		ObjectExplorerWrapper
+			with: (self instVarAt: index)
+			name: each
+			model: self]) ,
+		((1 to: self basicSize) collect: [:index |
+			ObjectExplorerWrapper
+				with: (self  basicAt: index)
+				name: index printString
+				model: self ])
+]
+
+{
 	#category : #'*ExploratoryNotebooks-tools',
 	#'squeak_changestamp' : 'ct 12/1/2025 20:45'
 }
