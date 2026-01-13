@@ -37,7 +37,7 @@ XnbTrackingProxy class >> newOn: anObject [
 
 {
 	#category : #'system primitives',
-	#'squeak_changestamp' : 'ct 12/28/2025 02:56'
+	#'squeak_changestamp' : 'ct 1/12/2026 22:43'
 }
 XnbTrackingProxy >> doesNotUnderstand: aMessage [
 
@@ -64,7 +64,7 @@ XnbTrackingProxy >> doesNotUnderstand: aMessage [
 				ifFalse: [self])
 		arguments: (arguments ifNil: [aMessage arguments]).
 	
-	^ (XnbTrackingProxy for: result xxxxnbResolveProxy)
+	^ (XnbTrackingProxy for: result xxxxnbResolveTrackingProxy)
 		ifNotNil: [:proxy |
 			proxy xxxxnbTrackingContext:
 				((XnbTrackingContext message: aMessage)
@@ -82,7 +82,7 @@ XnbTrackingProxy >> isProxy [
 
 {
 	#category : #'system primitives',
-	#'squeak_changestamp' : 'ct 12/22/2025 21:50'
+	#'squeak_changestamp' : 'ct 1/12/2026 22:44'
 }
 XnbTrackingProxy >> mustBeBoolean [
 	"Overwritten to preserve original sender context.
@@ -90,25 +90,25 @@ XnbTrackingProxy >> mustBeBoolean [
 	This is required to support conditional jumps (ifTrue:/ifFalse:) based on traced booleans, e.g.:
 		(ObjectTracer on: false) ifTrue: [1] ifFalse: [2]."
 
-	^ (self mustBeBooleanIn: thisContext sender) xxxxnbResolveProxy
+	^ (self mustBeBooleanIn: thisContext sender) xxxxnbResolveTrackingProxy
 ]
 
 {
 	#category : #proxy,
-	#'squeak_changestamp' : 'ct 12/22/2025 21:50'
+	#'squeak_changestamp' : 'ct 1/12/2026 22:44'
 }
 XnbTrackingProxy >> resolveProxy [
 
-	^ self xxxxnbResolveProxy
+	^ self xxxxnbResolveTrackingProxy
 ]
 
 {
 	#category : #accessing,
-	#'squeak_changestamp' : 'ct 12/22/2025 21:50'
+	#'squeak_changestamp' : 'ct 1/12/2026 22:44'
 }
-XnbTrackingProxy >> xxxxnbResolveProxy [
+XnbTrackingProxy >> xxxxnbResolveTrackingProxy [
 
-	^ self xxxxnbTrackedObject xxxxnbResolveProxy
+	^ self xxxxnbTrackedObject xxxxnbResolveTrackingProxy
 ]
 
 {

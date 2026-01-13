@@ -28,9 +28,9 @@ Object >> xnbTrackingFieldsFor: anInspector on: aStream [
 
 {
 	#category : #'*ExploratoryNotebooks-tracking',
-	#'squeak_changestamp' : 'ct 12/22/2025 21:51'
+	#'squeak_changestamp' : 'ct 1/12/2026 22:43'
 }
-Object >> xxxxnbResolveProxy [
+Object >> xxxxnbResolveTrackingProxy [
 
 	^ self
 ]

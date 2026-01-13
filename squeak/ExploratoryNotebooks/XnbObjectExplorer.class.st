@@ -73,11 +73,11 @@ XnbObjectExplorer >> inspectSelection [
 
 {
 	#category : #'accessing - objects',
-	#'squeak_changestamp' : 'ct 12/23/2025 00:20'
+	#'squeak_changestamp' : 'ct 1/12/2026 22:43'
 }
 XnbObjectExplorer >> object [
 
-	^ super object xxxxnbResolveProxy
+	^ super object xxxxnbResolveTrackingProxy
 ]
 
 {
@@ -93,11 +93,11 @@ XnbObjectExplorer >> rootObject: anObject [
 
 {
 	#category : #accessing,
-	#'squeak_changestamp' : 'ct 12/23/2025 00:38'
+	#'squeak_changestamp' : 'ct 1/12/2026 22:43'
 }
 XnbObjectExplorer >> selectedXnbTrackingContext [
 
-	^ self currentSelection xxxxnbResolveProxy value xxxxnbTrackingContext
+	^ self currentSelection xxxxnbResolveTrackingProxy value xxxxnbTrackingContext
 ]
 
 {
