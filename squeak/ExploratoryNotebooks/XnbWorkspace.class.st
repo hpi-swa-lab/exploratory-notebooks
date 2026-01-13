@@ -11,11 +11,20 @@ Class {
 
 {
 	#category : #accessing,
-	#'squeak_changestamp' : 'ct 11/25/2025 16:20'
+	#'squeak_changestamp' : 'ct 1/13/2026 01:31'
+}
+XnbWorkspace class >> appInstanceName [
+
+	^ 'Exploratory Notebook'
+]
+
+{
+	#category : #accessing,
+	#'squeak_changestamp' : 'ct 1/13/2026 01:29'
 }
 XnbWorkspace class >> appName [
 
-	^ 'Exploratory Notebook'
+	^ 'Exploratory Notebooks'
 ]
 
 {
@@ -28,12 +37,48 @@ XnbWorkspace class >> githubRepositoryParams [
 ]
 
 {
+	#category : #'initialize-release',
+	#'squeak_changestamp' : 'ct 1/13/2026 01:30'
+}
+XnbWorkspace class >> initialize [
+
+	self registerInWorldMenu.
+]
+
+{
 	#category : #'instance creation',
 	#'squeak_changestamp' : 'ct 11/25/2025 16:19'
 }
 XnbWorkspace class >> open [
 
 	^ self new open
+]
+
+{
+	#category : #'initialize-release',
+	#'squeak_changestamp' : 'ct 1/13/2026 01:31'
+}
+XnbWorkspace class >> registerInWorldMenu [
+
+	TheWorldMenu registerOpenCommand: {self appInstanceName. {self. #open}}.
+]
+
+{
+	#category : #preferences,
+	#'squeak_changestamp' : 'ct 1/13/2026 01:32'
+}
+XnbWorkspace class >> shouldStyle [
+
+	^ true
+]
+
+{
+	#category : #'initialize-release',
+	#'squeak_changestamp' : 'ct 1/13/2026 01:30'
+}
+XnbWorkspace class >> unload [
+
+	self unregisterFromWorldMenu.
 ]
 
 {
@@ -114,6 +159,17 @@ XnbWorkspace >> buttonBarHeightWith: builder [
 
 {
 	#category : #accessing,
+	#'squeak_changestamp' : 'ct 1/13/2026 01:35'
+}
+XnbWorkspace >> cleanFileNameForSave: aString [
+
+	^ (aString includes: $.)
+		ifFalse: [aString , '.xnb.html']
+		ifTrue: [aString]
+]
+
+{
+	#category : #accessing,
 	#'squeak_changestamp' : 'ct 12/1/2025 23:20'
 }
 XnbWorkspace >> contents [
@@ -148,14 +204,14 @@ XnbWorkspace >> evaluate: aText [
 
 {
 	#category : #actions,
-	#'squeak_changestamp' : 'ct 12/27/2025 20:20'
+	#'squeak_changestamp' : 'ct 1/13/2026 01:36'
 }
 XnbWorkspace >> export [
 
 	| fileName |
 	fileName := Project uiManager
 		saveFilenameRequest: 'Save exploratory notebook as...'
-		initialAnswer: ('{1}.xnb.html' format: {self labelString asFileName}).
+		initialAnswer: self suggestedFileNameForSave.
 	fileName ifNil: [^ self].
 	self notebook saveOnFileNamed: fileName.
 ]
@@ -183,11 +239,11 @@ XnbWorkspace >> initialize [
 
 {
 	#category : #toolbuilder,
-	#'squeak_changestamp' : 'ct 12/2/2025 02:14'
+	#'squeak_changestamp' : 'ct 1/13/2026 01:31'
 }
 XnbWorkspace >> labelString [
 
-	^ self class appName , '(' , self identityHash , ')'
+	^ self class appInstanceName , '(' , self identityHash , ')'
 ]
 
 {
