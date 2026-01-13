@@ -82,15 +82,6 @@ XnbTrackingProxy >> doesNotUnderstand: aMessage [
 ]
 
 {
-	#category : #proxy,
-	#'squeak_changestamp' : 'ct 12/22/2025 21:36'
-}
-XnbTrackingProxy >> isProxy [
-
-	^ true
-]
-
-{
 	#category : #'system primitives',
 	#'squeak_changestamp' : 'ct 1/12/2026 22:44'
 }
@@ -101,15 +92,6 @@ XnbTrackingProxy >> mustBeBoolean [
 		(ObjectTracer on: false) ifTrue: [1] ifFalse: [2]."
 
 	^ (self mustBeBooleanIn: thisContext sender) xxxxnbResolveTrackingProxy
-]
-
-{
-	#category : #proxy,
-	#'squeak_changestamp' : 'ct 1/12/2026 22:44'
-}
-XnbTrackingProxy >> resolveProxy [
-
-	^ self xxxxnbResolveTrackingProxy
 ]
 
 {
