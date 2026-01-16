@@ -9,6 +9,9 @@ Metacello new
 	load: 'JSBridge-Core'.
 Transcript showln: 'SqueakJS Bridge was installed.'.
 
+"Prevent default AutoStart"
+Smalltalk removeFromStartUpList: AutoStart.
+
 "Remove default welcome contents"
 (World submorphOfClass: PreferenceWizardMorph) ifNotNil: #delete.
 TheWorldMainDockingBar instance closeAllWindows.
