@@ -19,5 +19,5 @@ Transcript showln: ('Installing ExploratoryNotebooks from {1}... ' format: {work
 Metacello new
 	baseline: 'ExploratoryNotebooks';
 	repository: 'tonel://' , workspacePath , '/squeak';
-	load.
+	load: #experimental.
 Transcript showln: 'ExploratoryNotebooks was installed'.

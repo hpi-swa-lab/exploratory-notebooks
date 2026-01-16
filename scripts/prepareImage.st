@@ -1,6 +1,11 @@
 | workspacePath oldArchivePath |
 ((Smalltalk globals at: #CIPrepareImageDirectory) directoryEntry / 'install.st') readStream fileIn.
 
+self flag: #terminationExample.
+Installer new
+	primMerge: 'Kernel-jar.1633.mcz'
+	from: MCRepository trunk.
+
 "Install SqueakJS Bridge"
 Transcript showln: 'Installing SqueakJS Bridge...'.
 Metacello new
