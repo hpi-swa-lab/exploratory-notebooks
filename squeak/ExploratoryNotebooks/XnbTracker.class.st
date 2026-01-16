@@ -47,29 +47,29 @@ XnbTracker class >> isTracking [
 
 {
 	#category : #recording,
-	#'squeak_changestamp' : 'ct 12/2/2025 00:21'
+	#'squeak_changestamp' : 'ct 1/16/2026 18:06'
 }
 XnbTracker class >> recordExpression: aStringOrText fromTool: aModel [
 
-	^ self requestWorkspace recordExpression: aStringOrText fromTool: aModel
+	^ (self requestWorkspace ifNil: [^ self]) recordExpression: aStringOrText fromTool: aModel
 ]
 
 {
 	#category : #recording,
-	#'squeak_changestamp' : 'ct 12/2/2025 01:30'
+	#'squeak_changestamp' : 'ct 1/16/2026 18:06'
 }
 XnbTracker class >> recordStaticTool: aModel [
 
-	^ self requestWorkspace recordStaticTool: aModel
+	^ (self requestWorkspace ifNil: [^ self]) recordStaticTool: aModel
 ]
 
 {
 	#category : #recording,
-	#'squeak_changestamp' : 'ct 12/1/2025 21:13'
+	#'squeak_changestamp' : 'ct 1/16/2026 18:06'
 }
 XnbTracker class >> recordTool: aModel [
 
-	^ self requestWorkspace recordTool: aModel
+	^ (self requestWorkspace ifNil: [^ self]) recordTool: aModel
 ]
 
 {
@@ -84,7 +84,7 @@ XnbTracker class >> removeCurrentWorkspace: aWorkspace [
 
 {
 	#category : #recording,
-	#'squeak_changestamp' : 'ct 12/1/2025 21:21'
+	#'squeak_changestamp' : 'ct 1/16/2026 18:05'
 }
 XnbTracker class >> requestWorkspace [
 
@@ -93,7 +93,9 @@ XnbTracker class >> requestWorkspace [
 	workspaces size < 2 ifTrue: [^ workspaces ifNotEmpty: [workspaces anyOne]].
 	^ Project uiManager
 		chooseFromLabeledValues:
-			(workspaces collect: [:workspace | workspace labelString -> workspace])
+			(workspaces
+				collect: [:workspace | workspace labelString -> workspace]
+				as: OrderedDictionary)
 		title: 'Choose notebook'
 ]
 
