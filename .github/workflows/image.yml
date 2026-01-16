@@ -13,17 +13,17 @@ jobs:
           squeak-version: trunk
           prepare-script: ./scripts/prepareImage.st
           postpare-script: ./scripts/postpareImage.st
-      
+
       - name: Prepare gh-pages content all-in-one bundle
         run: |
           mkdir -p gh-pages
 
-          zip=$(find . -name "Squeak*.zip" | head -n 1)
+          zip="${{ steps.create-image.outputs.bundle-path }}"
           echo "Extracting: $zip"
           unzip -j "$zip" "*.image" "*.changes" "*.sources" -d gh-pages/
           
           cp -r demo/* gh-pages/
-      
+
       - name: Deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v3
         with:

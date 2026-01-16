@@ -1,4 +1,5 @@
 "Install ExploratoryNotebooks"
+| workspacePath |
 workspacePath := [| dir |
 	dir := (Smalltalk globals at: #CIPrepareImageDirectory) directoryEntry.
 	[(dir / '.project') exists] whileFalse: [
