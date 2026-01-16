@@ -1,0 +1,34 @@
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: LinqLover/create-image@v2
+        id: create-image
+        with:
+          squeak-version: trunk
+          prepare-script: ./scripts/prepareImage.st
+          postpare-script: ./scripts/postpareImage.st
+      
+      - name: Prepare gh-pages content all-in-one bundle
+        run: |
+          mkdir -p gh-pages
+
+          zip=$(find . -name "Squeak*.zip" | head -n 1)
+          echo "Extracting: $zip"
+          unzip -j "$zip" "*.image" "*.changes" "*.sources" -d gh-pages/
+          
+          cp -r demo/* gh-pages/
+      
+      - name: Deploy to gh-pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./gh-pages
+          user_name: github-actions[bot]
+          user_email: github-actions[bot]@users.noreply.github.com
+          commit_message: Deploy for ${{ github.sha }}
