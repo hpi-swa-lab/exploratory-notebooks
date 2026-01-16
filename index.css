@@ -1,0 +1,136 @@
+/* Layout */
+html {
+    height: 100%;
+}
+
+body {
+    min-height: 100%;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    background-color: #f8f9fa;
+}
+
+#content {
+    flex: 1;
+    min-height: 0;
+}
+
+#staticContent {
+    flex: 1;
+    min-height: 0;
+    border: none;
+    margin: 0;
+    padding: 0;
+    background: white;
+}
+
+#sqContainer {
+    flex: 1;
+    min-height: 0;
+    position: relative;
+}
+
+/* File Input */
+.custom-file-button {
+    width: 300px;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    border: 1px solid #ced4da;
+    border-radius: 0.375rem;
+}
+
+.custom-file-button .file-display-wrapper {
+    position: relative;
+    padding: 0;
+    display: flex;
+    align-items: center;
+}
+
+.custom-file-button #fileInputDisplay {
+    padding-left: 0.75rem;
+    color: #6c757d;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+}
+
+.custom-file-button input[type="file"] {
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+}
+
+.custom-file-button:hover label {
+    background-color: #dde0e3;
+    cursor: pointer;
+}
+
+/* Focus State: Replicating Bootstrap Focus Ring */
+.custom-file-button:focus-within {
+    border-color: var(--bs-focus-ring-border);
+    outline: 0;
+    box-shadow: 0 0 0 0.25rem var(--bs-focus-ring-color);
+}
+
+/* Modal Transitions */
+.modal.fade {
+    transition: opacity 0.1s linear !important;
+}
+
+.modal-backdrop.fade {
+    transition: opacity 0.1s linear !important;
+}
+
+.modal-dialog {
+    transition: transform 0.1s ease-out !important;
+}
+
+/* SqueakJS */
+#sqCanvas {
+    position: absolute;
+    background: #000;
+    cursor: default;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+}
+
+canvas.pixelated {
+    image-rendering: -moz-crisp-edges;
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: pixelated;
+    -ms-interpolation-mode: nearest-neighbor;
+}
+
+div#sqSpinner {
+    position: fixed;
+    margin: auto;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    width: 100px;
+    height: 100px;
+    border-radius: 50px;
+    background: rgba(0, 0, 0, 0.3);
+    box-shadow: 0 0 5px 5px #F90;
+    display: none;
+    transform: rotate(30deg);
+}
+
+div#sqSpinner > div {
+    position: absolute;
+    top: 45px;
+    left: 5px;
+    width: 90px;
+    height: 10px;
+    border-radius: 5px;
+    box-shadow: 0 0 5px 5px #F90;
+}
