@@ -52,7 +52,7 @@ BaselineOfExploratoryNotebooks >> depChangeset: urlString [
 
 {
 	#category : #scripts,
-	#'squeak_changestamp' : 'ct 1/14/2026 21:49'
+	#'squeak_changestamp' : 'ct 1/16/2026 19:55'
 }
 BaselineOfExploratoryNotebooks >> installProxyPreviewDependencies [
 
@@ -63,7 +63,7 @@ BaselineOfExploratoryNotebooks >> installProxyPreviewDependencies [
 	
 	dependencies := {
 		"#resolveProxy for primitives"
-		self depChangeset: 'https://lists.squeakfoundation.org/archives/list/squeak-dev@lists.squeakfoundation.org/message/OPX75AARLW5WQ4QJE3B3RU2NXKSAIM3M/attachment/4/resolveProxy.4.cs'.
+		self depChangeset: 'https://lists.squeakfoundation.org/archives/list/squeak-dev@lists.squeakfoundation.org/message/XWYSCEVPE3UZCAFXGALMAECNJ3QFPM3G/attachment/4/resolveProxy.41.cs'.
 	}.
 	
 	dependencies
