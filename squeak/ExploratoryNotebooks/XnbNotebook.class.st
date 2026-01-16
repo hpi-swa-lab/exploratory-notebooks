@@ -107,85 +107,72 @@ XnbNotebook >> cellRangesAfter: startToolContainer to: stopToolContainer do: sta
 
 {
 	#category : #accessing,
-	#'squeak_changestamp' : 'ct 11/28/2025 22:52'
+	#'squeak_changestamp' : 'ct 1/16/2026 19:04'
 }
 XnbNotebook >> cellRangesDo: startStopContainerBlock [
  
-	^ self
-		cellRangesUpTo: nil
-		do: startStopContainerBlock
+	| containerIndex start stop |
+	start := 1.
+	[| toolContainer |
+	toolContainer := [(containerIndex := self text indexOf: Character startOfHeader startingAt: start) > 0 ifFalse:
+		[start <= self text size ifTrue:
+			[stop := self text size.
+			startStopContainerBlock
+				value: start
+				value: stop
+				value: nil].
+		
+		^ self].
+	
+	stop := containerIndex - 1.
+	(stop > start and: [(self text at: stop) = Character cr]) ifTrue:
+		[stop := stop - 1].
+	(self text attributesAt: containerIndex)
+		detect: [:attr | attr isKindOf: XnbTextAnchor]
+		ifNone: [start := containerIndex + 1. nil]]
+			whileNil anchoredMorph.
+	
+	startStopContainerBlock
+		value: start
+		value: stop
+		value: toolContainer.
+	
+	start := containerIndex + 1.
+	(self text at: start ifAbsent: [nil]) = Character cr ifTrue:
+		[start := start + 1]]
+		repeat.
 ]
 
 {
 	#category : #accessing,
-	#'squeak_changestamp' : 'ct 11/29/2025 01:54'
+	#'squeak_changestamp' : 'ct 1/16/2026 19:11'
 }
 XnbNotebook >> cellRangesFrom: startToolContainer to: stopToolContainer do: startStopContainerBlock [
  
-	| started start containerIndex stop |
-	start := 1.
+	| started |
 	started := startToolContainer isNil.
-	[(containerIndex := self text indexOf: Character startOfHeader startingAt: start) > 0] whileTrue:
-		[| toolContainer |
-		stop := containerIndex - 1.
-		(stop > start and: [(self text at: stop) = Character cr]) ifTrue:
-			[stop := stop - 1].
-		toolContainer := ((self text attributesAt: containerIndex) detect: [:attr | attr isKindOf: XnbTextAnchor])
-			anchoredMorph.
-		(started not and: [toolContainer = startToolContainer]) ifTrue: [started := true].
+	
+	self cellRangesDo: [:start :stop :container |
+		(started not and: [container = startToolContainer]) ifTrue: [started := true].
 		started ifTrue:
-			[startStopContainerBlock
-				value: start
-				value: stop
-				value: toolContainer].
-		toolContainer = stopToolContainer ifTrue: [^ self].
-		start := containerIndex + 1.
-		(self text at: start) = Character cr ifTrue:
-			[start := start + 1]].
+			[startStopContainerBlock value: start value: stop value: container].
+		container = stopToolContainer ifTrue: [^ self]].
 	
 	started ifFalse: [^ (KeyNotFound key: startToolContainer) signal].
 	stopToolContainer ifNotNil: [^ (KeyNotFound key: stopToolContainer) signal].
-	
-	start <= self text size ifTrue:
-		[stop := self text size.
-		startStopContainerBlock
-			value: start
-			value: stop
-			value: nil].
 ]
 
 {
 	#category : #accessing,
-	#'squeak_changestamp' : 'ct 11/28/2025 22:55'
+	#'squeak_changestamp' : 'ct 1/16/2026 19:06'
 }
 XnbNotebook >> cellRangesUpTo: lastToolContainer do: startStopContainerBlock [
  
-	| containerIndex start stop |
-	start := 1.
-	[(containerIndex := self text indexOf: Character startOfHeader startingAt: start) > 0] whileTrue:
-		[| toolContainer |
-		stop := containerIndex - 1.
-		(stop > start and: [(self text at: stop) = Character cr]) ifTrue:
-			[stop := stop - 1].
-		toolContainer := ((self text attributesAt: containerIndex) detect: [:attr | attr isKindOf: XnbTextAnchor])
-			anchoredMorph.
-		startStopContainerBlock
-			value: start
-			value: stop
-			value: toolContainer.
-		toolContainer = lastToolContainer ifTrue: [^ self].
-		start := containerIndex + 1.
-		(self text at: start) = Character cr ifTrue:
-			[start := start + 1]].
+	self cellRangesDo: [:start :stop :container |
+		startStopContainerBlock value: start value: stop value: container.
+		container = lastToolContainer ifTrue: [^ self]].
 	
 	lastToolContainer ifNotNil: [^ (KeyNotFound key: lastToolContainer) signal].
-	
-	start <= self text size ifTrue:
-		[stop := self text size.
-		startStopContainerBlock
-			value: start
-			value: stop
-			value: nil].
 ]
 
 {
