@@ -55,6 +55,15 @@ XnbWorkspace class >> open [
 ]
 
 {
+	#category : #'instance creation',
+	#'squeak_changestamp' : 'ct 1/16/2026 19:17'
+}
+XnbWorkspace class >> openExample [
+
+	^ XnbNotebook example openWithLabel: 'Welcome'
+]
+
+{
 	#category : #'initialize-release',
 	#'squeak_changestamp' : 'ct 1/13/2026 01:31'
 }
