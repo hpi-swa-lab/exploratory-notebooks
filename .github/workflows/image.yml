@@ -21,7 +21,9 @@ jobs:
           zip="${{ steps.create-image.outputs.bundle-path }}"
           echo "Extracting: $zip"
           unzip -j "$zip" "*.image" "*.changes" "*.sources" -d gh-pages/
-          
+          mv gh-pages/Squeak*.image gh-pages/xnb-demo.image
+          mv gh-pages/Squeak*.changes gh-pages/xnb-demo.changes
+
           cp -r demo/* gh-pages/
 
       - name: Deploy to gh-pages
