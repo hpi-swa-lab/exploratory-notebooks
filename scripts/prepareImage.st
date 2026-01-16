@@ -15,3 +15,5 @@ Smalltalk removeFromStartUpList: AutoStart.
 "Remove default welcome contents"
 (World submorphOfClass: PreferenceWizardMorph) ifNotNil: #delete.
 TheWorldMainDockingBar instance closeAllWindows.
+
+XnbWorkspace openExample.

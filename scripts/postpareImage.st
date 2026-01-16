@@ -1,6 +1,8 @@
 | path regex blobId blob content |
 path := Smalltalk documentPath
-	ifNil: [^ XnbNotebook openExample].
+	ifNil: [^ self].
+
+(SystemWindow windowsIn: World satisfying: [:w | w model isKindOf: XnbWorkspace]) do: [:w | w collapse].
 
 "webviewer"
 regex := '^js-blob\:(.+)$' asRegex.
