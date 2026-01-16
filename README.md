@@ -12,6 +12,8 @@
    	get; "for updates"
    	load.
    ```
+
+   Alternatively, use `load: #experimental` to install advanced tracking support for immediate objects. (This will patch several methods in the base system.)
 3. Open an example notebook:
 
    ```smalltalk
