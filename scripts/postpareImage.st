@@ -1,4 +1,6 @@
 | path regex blobId blob content |
+Smalltalk removeFromStartUpList: AutoStart.
+
 path := Smalltalk documentPath
 	ifNil: [^ XnbNotebook openExample].
 
