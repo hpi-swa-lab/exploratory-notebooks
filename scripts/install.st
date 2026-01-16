@@ -8,6 +8,6 @@ workspacePath := [| dir |
 Transcript showln: ('Installing ExploratoryNotebooks from {1}... ' format: {workspacePath}).
 Metacello new
 	baseline: 'ExploratoryNotebooks';
-	repository: 'filetree://' , workspacePath , '/packages';
+	repository: 'filetree://' , workspacePath , '/squeak';
 	load.
 Transcript showln: 'ExploratoryNotebooks was installed'.
