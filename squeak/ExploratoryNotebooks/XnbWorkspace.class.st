@@ -248,11 +248,11 @@ XnbWorkspace >> initialize [
 
 {
 	#category : #toolbuilder,
-	#'squeak_changestamp' : 'ct 1/13/2026 01:31'
+	#'squeak_changestamp' : 'ct 1/16/2026 19:17'
 }
 XnbWorkspace >> labelString [
 
-	^ self class appInstanceName , '(' , self identityHash , ')'
+	^ windowTitle ifNil: [self class appInstanceName , '(' , self identityHash , ')']
 ]
 
 {

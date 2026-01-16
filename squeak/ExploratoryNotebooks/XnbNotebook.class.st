@@ -52,11 +52,14 @@ XnbNotebook class >> initialize [
 
 {
 	#category : #loading,
-	#'squeak_changestamp' : 'ct 12/27/2025 20:46'
+	#'squeak_changestamp' : 'ct 1/16/2026 19:14'
 }
 XnbNotebook class >> openFromFileNamed: fileName [
 
-	^ (self fromFileNamed: fileName) open
+	| label |
+	label := FileDirectory localNameFor: fileName.
+	(label endsWith: '.xnb.html') ifTrue: [label := label allButLast: '.xnb.html' size].
+	^ (self fromFileNamed: fileName) openWithLabel: label
 ]
 
 {
@@ -236,12 +239,24 @@ XnbNotebook >> numberOfToolContainers [
 
 {
 	#category : #opening,
-	#'squeak_changestamp' : 'ct 12/27/2025 20:50'
+	#'squeak_changestamp' : 'ct 1/16/2026 19:20'
 }
 XnbNotebook >> open [
 
+	^ self openWithLabel: nil
+]
+
+{
+	#category : #opening,
+	#'squeak_changestamp' : 'ct 1/16/2026 19:20'
+}
+XnbNotebook >> openWithLabel: aString [
+
 	^ XnbWorkspace new
 		notebook: self;
+		in: [:workspace |
+			aString ifNotNil:
+				[workspace setWindowTitle: aString]];
 		open
 ]
 
