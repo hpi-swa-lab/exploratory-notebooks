@@ -6,14 +6,10 @@ Class {
 
 {
 	#category : #html,
-	#'squeak_changestamp' : 'ct 12/28/2025 22:28'
+	#'squeak_changestamp' : 'ct 1/16/2026 20:36'
 }
 XnbTextAnchor >> closeHtmlOn: aHtmlReadWriter [ 
 
-	"Prevent SOH from being rendered as regular space"
-	aHtmlReadWriter stream peekLast = Character startOfHeader ifTrue:
-		[aHtmlReadWriter stream skip: -1].
-	
 	aHtmlReadWriter nextPutAll: '</ExploratoryNotebook>'.
 ]
 

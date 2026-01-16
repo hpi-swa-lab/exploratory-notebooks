@@ -57,7 +57,7 @@ XnbHtmlReadWriter >> nextWorkspace [
 
 {
 	#category : #mapping,
-	#'squeak_changestamp' : 'ct 12/28/2025 01:16'
+	#'squeak_changestamp' : 'ct 1/16/2026 20:34'
 }
 XnbHtmlReadWriter >> processEndTag: tagName eagerly: eagerly [
 
@@ -73,6 +73,8 @@ XnbHtmlReadWriter >> processEndTag: tagName eagerly: eagerly [
 	runArray atLast: 1 put: (runArray last copyWithout: imgAnchor).
 	xnbAnchor anchoredMorph toolMorph firstSubmorph image:
 		(imgAnchor anchoredMorph copy: (xnbAnchor anchoredMorph toolMorph removeProperty: #toolBounds)).
+	
+	^ super processEndTag: tagName eagerly: eagerly
 ]
 
 {
@@ -94,4 +96,14 @@ XnbHtmlReadWriter >> workspace [
 		[workspace := XnbWorkspace new
 			shouldStyle: true;
 			yourself]
+]
+
+{
+	#category : #writing,
+	#'squeak_changestamp' : 'ct 1/16/2026 20:35'
+}
+XnbHtmlReadWriter >> writeContent: aString [
+
+	^ super writeContent:
+		(aString copyWithout: Character startOfHeader)
 ]
