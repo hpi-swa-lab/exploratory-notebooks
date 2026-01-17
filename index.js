@@ -13,7 +13,7 @@ const state = {
 window.onload = async function () {
   setupEventListeners()
   const params = new URLSearchParams(window.location.search)
-  const notebookUri = params.get('nb') || './example.xnb.html'
+  const notebookUri = params.get('nb') || './simple.xnb.html'
   await loadNotebook(notebookUri)
   setMode('static')
 }
@@ -85,6 +85,11 @@ async function openNotebookUri(uri) {
   }
 
   await loadNotebook(uri)
+
+  // Update URL parameter
+  const url = new URL(window.location)
+  url.searchParams.set('nb', uri)
+  window.history.pushState({}, '', url)
 
   if (state.currentMode === 'dynamic') {
     await startSqueak()
@@ -231,6 +236,11 @@ async function openNotebookFile(file) {
   const staticFrame = document.getElementById('staticContent')
   staticFrame.srcdoc = wrapContentWithStyles(htmlContent)
   staticFrame.onload = () => setupNotebookClickHandlers()
+
+  // Remove URL parameter when uploading a file
+  const url = new URL(window.location)
+  url.searchParams.delete('nb')
+  window.history.pushState({}, '', url)
 
   if (state.currentMode === 'dynamic') {
     await startSqueak()
