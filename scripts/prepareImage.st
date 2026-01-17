@@ -23,4 +23,6 @@ TheWorldMainDockingBar instance closeAllWindows.
 
 PreferenceWizardMorph new openInWorld; adjustSettingsForLowPerformance; delete.
 
-XnbWorkspace openExample.
+Model useColorfulWindows: true.
+
+XnbWorkspace openExample collapse.
