@@ -1,5 +1,13 @@
 # Exploratory Notebooks
 
+> Share your exploratory session as a literate notebook, including embedded inspectors and debuggers
+
+<p align="center">
+   <a href="https://hpi-swa-lab.github.io/exploratory-notebooks/?nb=simple.xnb.html">
+      <img height=400px alt="Example notebook" src="assets/notebook.png" />
+   </a>
+</p>
+
 ## Installation
 
 1. [Get a recent Squeak Trunk image](https://squeak.org/downloads/) (tested with Squeak 6.1Alpha #23575)
@@ -22,11 +30,11 @@
 
    Alternatively, you can also download one of the [example notebooks](./demo/) and drop it into the Squeak image.
 
-   > [!NOTE]  
-   > To reproduce the `testTerminateEverywhere` notebook, you must load `Kernel-jar.1633` from trunk **before** installing this project:
-   > 1. In the main docking bar, open *Apps* > *Monticello Browser*
-   > 2. In the package list, select `Kernel`
-   > 3. In the repository list, select `https://source.squeak.org/trunk`
-   > 4. Press *Open*
-   > 5. In the version list, select `Kernel-jar.1633`
-   > 6. Press *Load*
+> [!NOTE]  
+> To reproduce the `testTerminateEverywhere` notebook, you must load `Kernel-jar.1633` from trunk **before** installing this project:
+> 1. In the main docking bar, open *Apps* > *Monticello Browser*
+> 2. In the package list, select `Kernel`
+> 3. In the repository list, select `https://source.squeak.org/trunk`
+> 4. Press *Open*
+> 5. In the version list, select `Kernel-jar.1633`
+> 6. Press *Load*
