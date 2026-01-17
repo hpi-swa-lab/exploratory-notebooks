@@ -21,4 +21,6 @@ Smalltalk removeFromStartUpList: AutoStart.
 (World submorphOfClass: PreferenceWizardMorph) ifNotNil: #delete.
 TheWorldMainDockingBar instance closeAllWindows.
 
+PreferenceWizardMorph new openInWorld; adjustSettingsForLowPerformance; delete.
+
 XnbWorkspace openExample.
