@@ -23,12 +23,21 @@
             <input type="radio" class="btn-check" name="mode" value="dynamic" id="dynamicMode" autocomplete="off">
             <label class="btn btn-outline-primary" for="dynamicMode">Dynamic</label>
           </div>
-          <div class="input-group custom-file-button">
-            <label class="input-group-text" for="fileInput">Choose File</label>
-            <div class="form-control file-display-wrapper">
-              <span id="fileInputDisplay">No file selected...</span>
-              <input type="file" class="form-control" id="fileInput" accept=".xnb.html">
+          <div class="btn-group">
+            <div class="input-group custom-file-button">
+              <label class="input-group-text" for="fileInput">Choose File</label>
+              <div class="form-control file-display-wrapper">
+                <span id="fileInputDisplay">No file selected...</span>
+                <input type="file" class="form-control" id="fileInput" accept=".xnb.html">
+              </div>
             </div>
+            <button type="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+              <span class="visually-hidden">Browse Examples</span>
+            </button>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="example.xnb.html">Example: Hello World</a></li>
+              <li><a class="dropdown-item" href="testTerminateEverywhere.xnb.html">Example: testTerminateEverywhere</a></li>
+            </ul>
           </div>
           <button id="saveBtn" class="btn btn-dark text-nowrap flex-shrink-0">
             <i class="fa-solid fa-download"></i>

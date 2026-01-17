@@ -38,6 +38,16 @@ function setupEventListeners() {
     }
   })
 
+  document.querySelectorAll('.dropdown-menu .dropdown-item').forEach(item => {
+    item.addEventListener('click', async (e) => {
+      e.preventDefault()
+      const uri = e.currentTarget.getAttribute('href')
+      if (uri) {
+        await openNotebookUri(uri)
+      }
+    })
+  })
+
   document.getElementById('saveBtn').addEventListener('click', () => {
     downloadNotebook()
   })
@@ -60,6 +70,25 @@ async function handleModeChange(newMode) {
   }
   
   state.currentMode = newMode
+}
+
+// Load a bundled example notebook by URI with the same guards as file selection
+async function openNotebookUri(uri) {
+  if (state.isDirty) {
+    const confirmed = confirm('You have unsaved changes. Opening a new notebook will lose them. Continue?')
+    if (!confirmed) return
+  }
+
+  if (state.squeakRunning) {
+    const stopped = await stopSqueak()
+    if (!stopped) return
+  }
+
+  await loadNotebook(uri)
+
+  if (state.currentMode === 'dynamic') {
+    await startSqueak()
+  }
 }
 
 function setMode(mode) {
