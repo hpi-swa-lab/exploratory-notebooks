@@ -3,7 +3,7 @@
 > Share your exploratory session as a literate notebook, including embedded inspectors and debuggers
 
 <p align="center">
-   <a href="https://hpi-swa-lab.github.io/exploratory-notebooks/?nb=simple.xnb.html">
+   <a href="https://hpi-swa-lab.github.io/exploratory-notebooks/?nb=simple.xnb.html" target="_blank">
       <img height=400px alt="Example notebook" src="assets/notebook.png" />
    </a>
 </p>
