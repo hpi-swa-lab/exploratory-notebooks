@@ -7,15 +7,108 @@ const state = {
   isDirty: false,
   isEditing: false,
   originalHtmlContent: null,
+  pendingNotebookMessage: null,
+  initialized: false,
+  externalNotebookRequested: false,
+  activeLoadSeq: 0,
 }
+
+function beginNotebookLoad() {
+  state.activeLoadSeq += 1
+  return state.activeLoadSeq
+}
+
+function isCurrentLoad(seq) {
+  return seq === state.activeLoadSeq
+}
+
+let squeakUnloadWarningInstalled = false
+
+function installSqueakUnloadWarning() {
+  if (squeakUnloadWarningInstalled) return
+  squeakUnloadWarningInstalled = true
+
+  window.addEventListener('beforeunload', (e) => {
+    if (state.squeakRunning || state.isDirty) {
+      e.preventDefault()
+      e.returnValue = ''
+    }
+  })
+}
+
+function installSqueakUnloadWarningOnFirstInteraction() {
+  const canvas = document.getElementById('sqCanvas')
+  if (!canvas) return
+  if (canvas.dataset.unloadHookAttached) return
+  canvas.dataset.unloadHookAttached = 'true'
+
+  const onFirstInteraction = () => {
+    installSqueakUnloadWarning()
+    try { canvas.focus() } catch {}
+  }
+
+  canvas.addEventListener('pointerdown', onFirstInteraction, { capture: true, once: true })
+  canvas.addEventListener('keydown', onFirstInteraction, { capture: true, once: true })
+}
+
+// Allow embedding contexts to provide notebooks via postMessage
+window.addEventListener('message', async (event) => {
+  console.log('Received postMessage:', event.data)
+  let data = event.data
+  if (typeof data === 'string') {
+    try {
+      data = JSON.parse(data)
+    } catch {
+      return
+    }
+  }
+
+  if (!data || data.type !== 'notebook' || typeof data.html !== 'string') return
+
+  state.externalNotebookRequested = true
+
+  if (!state.initialized) {
+    console.log('Deferring notebook loading until initialization is complete')
+    state.pendingNotebookMessage = data
+    return
+  }
+
+  await openNotebookHtml(data.html, data.name, false)
+  if (data.dynamic) {
+    switchToDynamicMode()
+  }
+})
+
+window.opener?.postMessage('ready', '*')
 
 // Initialization
 window.onload = async function () {
   setupEventListeners()
+
+  // From here on, we can safely react to postMessage immediately.
+  state.initialized = true
+
   const params = new URLSearchParams(window.location.search)
   const notebookUri = params.get('nb') || './simple.xnb.html'
-  await loadNotebook(notebookUri)
-  setMode('static')
+
+  let shouldSwitchToDynamic = false
+
+  if (state.pendingNotebookMessage?.type === 'notebook' && typeof state.pendingNotebookMessage.html === 'string') {
+    const { html, name, dynamic } = state.pendingNotebookMessage
+    state.pendingNotebookMessage = null
+    await loadNotebookFromHtml(html, name, false)
+    if (dynamic) {
+      shouldSwitchToDynamic = true
+    }
+  } else if (!state.externalNotebookRequested && notebookUri !== '0') {
+    await loadNotebook(notebookUri)
+  }
+
+  if (shouldSwitchToDynamic) {
+    switchToDynamicMode()
+  } else {
+    setMode('static')
+  }
 }
 
 window.addEventListener('beforeunload', (e) => {
@@ -72,17 +165,24 @@ async function handleModeChange(newMode) {
   state.currentMode = newMode
 }
 
-// Load a bundled example notebook by URI with the same guards as file selection
-async function openNotebookUri(uri) {
+async function okToChangeNotebook() {
   if (state.isDirty) {
     const confirmed = confirm('You have unsaved changes. Opening a new notebook will lose them. Continue?')
-    if (!confirmed) return
+    if (!confirmed) return false
   }
 
   if (state.squeakRunning) {
     const stopped = await stopSqueak()
-    if (!stopped) return
+    if (!stopped) return false
   }
+
+  return true
+}
+
+// Load a bundled example notebook by URI with the same guards as file selection
+async function openNotebookUri(uri) {
+  const ok = await okToChangeNotebook()
+  if (!ok) return
 
   await loadNotebook(uri)
 
@@ -102,24 +202,91 @@ function setMode(mode) {
 }
 
 // Notebook loading
+function applyLoadedNotebook({ displayName, notebookUri, blob, htmlContent }, loadSeq) {
+  if (!isCurrentLoad(loadSeq)) return
+
+  document.getElementById('fileInputDisplay').textContent = displayName
+
+  state.currentNotebookBlob = blob
+  state.currentNotebookUri = notebookUri
+  state.isDirty = false
+  state.isEditing = false
+  state.originalHtmlContent = htmlContent
+
+  const staticHtmlContent = stripIgnoredElements(htmlContent)
+  const wrappedContent = wrapContentWithStyles(staticHtmlContent)
+  const staticFrame = document.getElementById('staticContent')
+  staticFrame.srcdoc = wrappedContent
+  staticFrame.onload = () => setupNotebookClickHandlers()
+}
+
 async function loadNotebook(uri) {
+  const loadSeq = beginNotebookLoad()
   const response = await fetch(uri)
   if (!response.ok) throw new Error('Failed to fetch notebook')
 
   const displayName = uri.startsWith('data:') ? uri : (uri.split('/').pop() || uri)
-  document.getElementById('fileInputDisplay').textContent = displayName
-  
-  state.currentNotebookBlob = await response.blob()
-  state.currentNotebookUri = uri
-  state.isDirty = false
-  state.isEditing = false
 
-  const htmlContent = await state.currentNotebookBlob.text()
-  state.originalHtmlContent = htmlContent
-  const wrappedContent = wrapContentWithStyles(htmlContent)
-  const staticFrame = document.getElementById('staticContent')
-  staticFrame.srcdoc = wrappedContent
-  staticFrame.onload = () => setupNotebookClickHandlers()
+  const blob = await response.blob()
+  const htmlContent = await blob.text()
+
+  if (!isCurrentLoad(loadSeq)) return
+
+  applyLoadedNotebook({
+    displayName,
+    notebookUri: uri,
+    blob,
+    htmlContent,
+  }, loadSeq)
+}
+
+async function openNotebookHtml(htmlContent, suggestedName, navigate = true) {
+  const ok = await okToChangeNotebook()
+  if (!ok) return
+
+  await loadNotebookFromHtml(htmlContent, suggestedName, navigate)
+  if (state.currentMode === 'dynamic') {
+    await startSqueak()
+  }
+}
+
+async function loadNotebookFromHtml(htmlContent, suggestedName, navigate = true) {
+  const loadSeq = beginNotebookLoad()
+  const filename = (typeof suggestedName === 'string' && suggestedName.trim())
+    ? suggestedName.trim()
+    : 'notebook.xnb.html'
+
+  const blob = new Blob([htmlContent], { type: 'text/html' })
+
+  if (!isCurrentLoad(loadSeq)) return
+
+  applyLoadedNotebook({
+    displayName: filename,
+    notebookUri: filename,
+    blob,
+    htmlContent,
+  }, loadSeq)
+
+  // Remove URL parameter when loading notebook from an external HTML string
+  const url = new URL(window.location)
+  url.searchParams.delete('nb')
+  window.history.pushState({}, '', url)
+}
+
+function stripIgnoredElements(htmlContent) {
+  try {
+    const parser = new DOMParser()
+    const isFullDoc = /<html[\s>]/i.test(htmlContent)
+    const doc = isFullDoc
+      ? parser.parseFromString(htmlContent, 'text/html')
+      : parser.parseFromString(`<!doctype html><html><head></head><body>${htmlContent}</body></html>`, 'text/html')
+
+    doc.querySelectorAll('[xnb-ignore]').forEach(el => el.remove())
+
+    return isFullDoc ? doc.documentElement.outerHTML : doc.body.innerHTML
+  } catch {
+    return htmlContent
+  }
 }
 
 function wrapContentWithStyles(htmlContent) {
@@ -163,7 +330,7 @@ function setupNotebookClickHandlers() {
     if (!confirmBtn.dataset.handlerAttached) {
       confirmBtn.dataset.handlerAttached = 'true'
       confirmBtn.addEventListener('click', () => {
-        document.querySelector('input[name="mode"][value="dynamic"]').click()
+        switchToDynamicMode()
         bootstrap.Modal.getInstance(document.getElementById('viewNotebookModal')).hide()
         if (confetti) setTimeout(() => {
           confetti({
@@ -206,6 +373,10 @@ function setupNotebookClickHandlers() {
   }
 }
 
+function switchToDynamicMode() {
+  document.querySelector('input[name="mode"][value="dynamic"]').click()
+}
+
 // File operations
 async function openNotebookFile(file) {
   if (!file.name.endsWith('.xnb.html')) {
@@ -213,34 +384,11 @@ async function openNotebookFile(file) {
     return
   }
 
-  if (state.isDirty) {
-    const confirmed = confirm('You have unsaved changes. Opening a new notebook will lose them. Continue?')
-    if (!confirmed) return
-  }
+  const ok = await okToChangeNotebook()
+  if (!ok) return
 
-  if (state.squeakRunning) {
-    const stopped = await stopSqueak()
-    if (!stopped) return
-  }
-
-  document.getElementById('fileInputDisplay').textContent = file.name
-
-  const blob = new Blob([await file.arrayBuffer()], { type: 'text/html' })
-  state.currentNotebookBlob = blob
-  state.currentNotebookUri = file.name
-  state.isDirty = false
-  state.isEditing = false
-  
-  const htmlContent = await blob.text()
-  state.originalHtmlContent = htmlContent
-  const staticFrame = document.getElementById('staticContent')
-  staticFrame.srcdoc = wrapContentWithStyles(htmlContent)
-  staticFrame.onload = () => setupNotebookClickHandlers()
-
-  // Remove URL parameter when uploading a file
-  const url = new URL(window.location)
-  url.searchParams.delete('nb')
-  window.history.pushState({}, '', url)
+  const htmlContent = await file.text()
+  await loadNotebookFromHtml(htmlContent, file.name)
 
   if (state.currentMode === 'dynamic') {
     await startSqueak()
@@ -309,6 +457,12 @@ function downloadNotebook() {
 async function startSqueak() {
   if (state.squeakRunning) return
   state.squeakRunning = true
+
+  // Chrome gates beforeunload dialogs behind user activation.
+  // If Squeak starts automatically, install a one-time hook so that once
+  // the user interacts with the Squeak canvas, we (re)register an unload
+  // warning handler that will actually be allowed to prompt.
+  installSqueakUnloadWarningOnFirstInteraction()
 
   let blobToUse = state.currentNotebookBlob
   
