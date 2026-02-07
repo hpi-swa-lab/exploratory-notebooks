@@ -60,7 +60,7 @@
 - Press the expand icon at the top of any tool to spawn a copy of it in the world.
 - Like in regular workspaces, you can also inspect variables or perform debug-its etc. from the notebook.
 
-## Web Viewer
+## [Web Viewer](https://hpi-swa-lab.github.io/exploratory-notebooks)
 
 You can also view and interact with exploratory notebooks on the web: <https://hpi-swa-lab.github.io/exploratory-notebooks>. Press <kbd>Choose File</kbd> to explore a shared `.xnb.html` file or use the drop-down menu to browse sample notebooks. By clicking on any tool, you can run the notebook in the browser using SqueakJS.
 
