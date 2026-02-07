@@ -373,6 +373,10 @@ function setupNotebookClickHandlers() {
   }
 }
 
+function switchToStaticMode() {
+  document.querySelector('input[name="mode"][value="static"]').click()
+}
+
 function switchToDynamicMode() {
   document.querySelector('input[name="mode"][value="dynamic"]').click()
 }
@@ -456,6 +460,15 @@ function downloadNotebook() {
 // Squeak integration
 async function startSqueak() {
   if (state.squeakRunning) return
+
+  if (state.currentNotebookUri.endsWith('testTerminateEverywhere.xnb.html')) {
+    const proceed = confirm("This notebook currently cannot be reproduced in the web environment due to a compatibility issue with SqueakJS. Try anyway?")
+    if (!proceed) {
+      switchToStaticMode()
+      return
+    }
+  }
+
   state.squeakRunning = true
 
   // Chrome gates beforeunload dialogs behind user activation.
