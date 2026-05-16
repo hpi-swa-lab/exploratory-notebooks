@@ -66,7 +66,7 @@ You can also view and interact with exploratory notebooks on the web: <https://h
 
 ## Citing
 
-> Christoph Thiede, Tom Beckmann, Marcel Taeumel, and Robert Hirschfeld. 2026. **Literate Exploratory Programming for Asynchronous Collaboration.** In *Companion Proceedings of the 9th International Conference on the Art, Science, and Engineering of Programming* (*<Programming>’26 Companion*), March 16–20, 2026, Munich, Germany. ACM, New York, NY, USA, 11 pages. To appear.
+> Christoph Thiede, Tom Beckmann, Marcel Taeumel, and Robert Hirschfeld. 2026. **Literate Exploratory Programming for Asynchronous Collaboration.** In *Companion Proceedings of the 10th International Conference on the Art, Science, and Engineering of Programming (<Programming> Companion ’26), March 16–20, 2026, Munich, Germany.* ACM, New York, NY, USA, 11 pages. <https://doi.org/10.1145/3801119.3801129>
 
 <details>
 <summary>BibTeX</summary>
@@ -80,7 +80,9 @@ You can also view and interact with exploratory notebooks on the web: <https://h
 	address = {New York, NY, USA},
 	booktitle = {Companion Proceedings of the 9th International Conference on the Art, Science, and Engineering of Programming},
 	location = {Munich, Germany},
-	series = {Onward! 26},
-	note = {To appear}
+	series = {‹Programming› Companion '26},
+	pages = {51–61},
+	doi = {10.1145/3801119.3801129},
+	isbn = {9798400725555}
 }</code></pre>
 </details>
